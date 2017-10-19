@@ -3,7 +3,7 @@
 #test run 2 nodes and 1 host controller ansible
 
 
-# Packages requiments host all
+# Packages requiments
 
 -ansible version 2.4.0.0
 
