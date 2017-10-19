@@ -1,0 +1,11 @@
+- name: Install dependencies nginx
+  apt:
+    name: 'python-passlib'
+    state: 'present'
+
+- name: Install Nginx web server
+  become: true
+  apt:
+     name: nginx
+     state: latest
+

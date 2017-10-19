@@ -1,0 +1,37 @@
+---
+
+- name: Configure nginx
+  template:
+    src: '{{dir_roles}}/nginx/templates/nginx.cof.j2'
+    dest: '/etc/nginx/nginx.conf'
+    group: 'root'
+    owner: 'root'
+    mode: '0644'
+
+- name: Config sites-enables nginx
+  template:
+    src: '{{dir_roles}}/nginx/templates/default-ssl.j2'
+    dest: '/etc/nginx/sites-available/default'
+    group: 'root'
+    owner: 'root'
+    mode: '0644'
+
+- name: create a directory and adduser www-data
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+- name: Create a directory and adduser+group www-data
+  file:
+    path: /var/www/html
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+
+- name: Create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/ssl/server.crt
+  notify: nginx restart

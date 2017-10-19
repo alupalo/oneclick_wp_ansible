@@ -1,0 +1,17 @@
+---
+#- name: PHP | add repo Ondrej PHP PPA
+- apt_repository: repo='ppa:ondrej/php' update_cache=yes
+
+#- name: install packages php
+- apt: name="{{ item }}" update_cache=yes state=latest
+  with_items:
+      - mcrypt
+      - nginx
+      - php-cli
+      - php-curl
+      - php-fpm
+      - php-intl
+      - php-json
+      - php-mcrypt
+      #- php-mysqlnd-ms
+      - php-mysql

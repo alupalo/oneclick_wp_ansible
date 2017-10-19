@@ -1,0 +1,70 @@
+- name: Create WordPress database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: Create WordPress database user
+  mysql_user: 
+      name="{{ wp_db_user }}" 
+      password="{{ wp_db_password }}" 
+      priv={{ wp_db_name }}.*:ALL,GRANT 
+      host="{{item}}" 
+      state=present 
+  with_items:
+        - localhost
+        - 127.0.0.1
+        - ::1
+        - "{{inventory_hostname }}"
+        - "{{ansible_hostname}}"
+        - '%'
+- name: Copy files templates nginx.conf
+  template:
+    src: '{{dir_roles}}/wordpress/templates/nginx_wp.conf.j2'
+    dest: '/etc/nginx/nginx.conf'
+    group: 'root'
+    owner: 'root'
+    mode: '0744'
+
+- name: Copy files templates sites-enables
+  template:
+    src: '{{dir_roles}}/wordpress/templates/site_en_wp.conf.j2'
+    dest: '/etc/nginx/sites-enabled/default'
+    group: 'root'
+    owner: 'root'
+    mode: '0744'
+
+- name: Copy files templates wp-config.php
+  template:
+    src: '{{dir_roles}}/wordpress/templates/wp-config.php'
+    dest: '/var/www/html/wordpress/wp-config.php'
+    group: 'www-data'
+    owner: 'www-data'
+    mode: '0744'
+
+- name: Copy files templates scripts randomkey
+  template:
+    src: '{{dir_roles}}/wordpress/templates/random_key_wp.sh'
+    dest: '~/random_key_wp.sh'
+    group: 'root'
+    owner: 'root'
+    mode: '0744'
+
+
+- name: automate generate key wp-config.php
+  command: ~/random_key_wp.sh
+
+# Change ownership of WordPress installation
+- file: path=/var/www/html/wordpress/
+        owner=www-data
+        group=www-data
+        state=directory
+        recurse=yes
+        setype=httpd_sys_content_t
+
+- name: mysql restart services
+  service: name=mysql state=restarted
+
+- name: nginx restart services
+  service: name=nginx state=restarted
+
+- name: php-fpm restart services
+  service: name=php7.1-fpm state=restarted
+

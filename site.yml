@@ -1,0 +1,22 @@
+---
+#run host
+- hosts: wp_host
+  become: yes
+  become_user: root
+
+#variables for wordpress
+  vars:
+   dir_roles: /etc/ansible/roles
+   mysql_root_password: apan2529
+   wp_db_user: wpuser
+   wp_db_password: wppassword
+   wp_db_name: wordpress
+
+#select roles
+  roles:
+    - ssh
+    - update
+    - mysql
+    - php
+    - nginx
+    - wordpress

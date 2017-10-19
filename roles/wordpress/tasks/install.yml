@@ -1,0 +1,17 @@
+# Drop old WordPress database user
+- mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=absent
+
+- name: Delete Old folder wordpress
+  file: path=/var/www/html/wordpress state=absent
+
+- name: Download and Install WordPress
+  get_url: url=http://wordpress.org/latest.tar.gz dest=/var/www/html/wordpress.tar.gz
+
+#Create new folder wordpress
+- file: path=/var/www/html/wordpress state=directory mode=0744
+
+- name: Extract wordpress
+  unarchive:
+    src: "/var/www/html/wordpress.tar.gz"
+    dest: "/var/www/html/"
+    copy: no
