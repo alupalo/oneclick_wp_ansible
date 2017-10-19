@@ -3,7 +3,7 @@
 #test run 2 nodes and 1 host controller ansible
 
 
-# Packages requiments
+# Packages requiments host all
 
 -ansible version 2.4.0.0
 
@@ -59,7 +59,7 @@ vars:
 
 # how to run deploy Oneclick-wp-ansible
 
-ansile-playbook -i host site.yml
+ansible-playbook -i host site.yml
 
 
 
