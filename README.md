@@ -13,9 +13,12 @@
 
 # How to install 
 sudo apt-add-repository ppa:ansible/ansible
+
 sudo 
 apt-get update
+
 sudo apt-get install ansible
+
 cd /etc/ansible/ && rm -rf /etc/ansible/*
 
 git clone https://github.com/alupalo/oneclick_wp_ansible.git 
