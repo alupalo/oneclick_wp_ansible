@@ -59,7 +59,7 @@ vars:
 
 # how to run deploy Oneclick-wp-ansible
 
-anisble-playbook -i host site.yml
+ansile-playbook -i host site.yml
 
 
 
