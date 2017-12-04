@@ -32,13 +32,4 @@
 
 
 
-#- name: Create the wordpress database
-#  mysql_db: db={{ wp_db_name }} state=present
-#  tags: install
 
-#- name: Create the Wordpress user
-#  mysql_user: >
-#    name={{ wp_db_user }}
-#    password={{ wp_db_password }}
-#    priv={{ wp_db_name }}.*:ALL
-#    host=localhost
